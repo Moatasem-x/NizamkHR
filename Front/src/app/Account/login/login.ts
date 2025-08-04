@@ -110,17 +110,15 @@ export class Login implements OnInit, OnDestroy {
           if (resp.role === "Employee") {
             this.router.navigate(['/empdash']);
           } else {
-            setTimeout(() => {
-              Toast.fire({
-                icon: "success",
-                iconColor: '#ffffff',
-                padding: '1rem 0.75rem',
-                title: "Signed in successfully",
-                background: "#198754",
-                color: '#ffffff',
-                });
-              this.router.navigate(['/hrdash']);
-            }, 5000);
+            Toast.fire({
+              icon: "success",
+              iconColor: '#ffffff',
+              padding: '1rem 0.75rem',
+              title: "Signed in successfully",
+              background: "#198754",
+              color: '#ffffff',
+              });
+            this.router.navigate(['/hrdash']);
           }
         } else {
           this.error = 'Invalid response from server.';
@@ -143,9 +141,7 @@ export class Login implements OnInit, OnDestroy {
             });
       },
       complete: () => {
-        setTimeout(() => {
-          this.spinner.hide();
-        }, 5000);
+        this.spinner.hide();
       }
     }));
   }
