@@ -1,0 +1,88 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="add-employee-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h1 class="form-title">
+        <i class="bi bi-umbrella"></i>
+        Request a Holiday
+      </h1>
+      <p class="form-subtitle">Submit your holiday request below</p>
+    </div>
+
+    <form [formGroup]="holidayForm" (ngSubmit)="onSubmit()" class="employee-form">
+      <div class="form-section">
+        <h2 class="section-title">
+          <i class="bi bi-calendar2-week"></i>
+          Holiday Details
+        </h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="leaveTypeId" class="form-label">Holiday Type</label>
+            <select id="leaveTypeId" formControlName="leaveTypeId" class="form-select" [class.invalid]="holidayForm.get('leaveTypeId')?.invalid && holidayForm.get('leaveTypeId')?.touched">
+              <option value="">Select type</option>
+              @for (type of holidayTypes; track type.id) {
+                <option [value]="type.id">{{ type.name }}</option>
+              }
+            </select>
+            @if (getFieldError('leaveTypeId')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('leaveTypeId') }}
+              </div>
+            }
+          </div>
+          <div class="form-row date-row">
+            <div class="form-group">
+              <label for="startDate" class="form-label">Start Date</label>
+              <input type="date" id="startDate" formControlName="startDate" class="form-input" [class.invalid]="holidayForm.get('startDate')?.invalid && holidayForm.get('startDate')?.touched">
+              @if (getFieldError('startDate')) {
+                <div class="error-message">
+                  <i class="bi bi-exclamation-circle"></i>
+                  {{ getFieldError('startDate') }}
+                </div>
+              }
+            </div>
+            <div class="form-group">
+              <label for="endDate" class="form-label">End Date</label>
+              <input type="date" id="endDate" formControlName="endDate" class="form-input" [class.invalid]="holidayForm.get('endDate')?.invalid && holidayForm.get('endDate')?.touched">
+              @if (getFieldError('endDate')) {
+                <div class="error-message">
+                  <i class="bi bi-exclamation-circle"></i>
+                  {{ getFieldError('endDate') }}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label for="reason" class="form-label">Reason</label>
+            <textarea id="reason" formControlName="reason" class="form-textarea" rows="3" placeholder="Describe your reason..." [class.invalid]="holidayForm.get('reason')?.invalid && holidayForm.get('reason')?.touched"></textarea>
+            @if (getFieldError('reason')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('reason') }}
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      @if (submitError) {
+        <div class="error-message">
+          <i class="bi bi-x-circle"></i>
+          {{ submitError }}
+        </div>
+      }
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="holidayForm.reset()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+          Reset
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="holidayForm.invalid">
+          <i class="bi bi-send"></i>
+          Submit Request
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

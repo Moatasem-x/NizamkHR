@@ -1,0 +1,32 @@
+<div class="update-profile-container" @modalAnim>
+  <h2>Update Profile</h2>
+  <form [formGroup]="profileForm" (ngSubmit)="saveProfileEdit()">
+    <div class="form-group">
+      <label for="address" class="form-label">Address</label>
+      <input type="text" id="address" formControlName="address" class="form-input" [class.invalid]="profileForm.get('address')?.invalid && profileForm.get('address')?.touched" placeholder="Enter address">
+      <div *ngIf="profileForm.get('address')?.invalid && profileForm.get('address')?.touched" class="error-message">
+        <i class="bi bi-exclamation-circle"></i>
+        <span *ngIf="profileForm.get('address')?.errors?.['required']">Address is required.</span>
+        <span *ngIf="profileForm.get('address')?.errors?.['minlength']">Address must be at least 4 characters.</span>
+        <span *ngIf="profileForm.get('address')?.errors?.['maxlength']">Address must not exceed 25 characters.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="phoneNumber" class="form-label">Phone Number</label>
+      <input type="tel" id="phoneNumber" formControlName="phoneNumber" class="form-input" [class.invalid]="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched" placeholder="+201xxxxxxxxx" maxlength="13">
+      <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched" class="error-message">
+        <i class="bi bi-exclamation-circle"></i>
+        <span *ngIf="profileForm.get('phoneNumber')?.errors?.['required']">Phone number is required.</span>
+        <span *ngIf="profileForm.get('phoneNumber')?.errors?.['pattern']">Please enter a valid phone number starting with +20, followed by 0, 1, 2, or 5, then 9 digits.</span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+      <button type="button" class="btn btn-secondary" (click)="close.emit()">
+        <i class="bi bi-x"></i> Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid">
+        <i class="bi bi-save"></i> Update Profile
+      </button>
+    </div>
+  </form>
+</div> 

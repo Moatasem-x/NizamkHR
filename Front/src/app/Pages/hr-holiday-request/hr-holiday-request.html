@@ -1,0 +1,134 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="hr-holiday-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h1 class="form-title">
+        <i class="bi bi-calendar-plus"></i>
+        Holiday Types Management
+      </h1>
+      <p class="form-subtitle">Create and manage holiday types available for employees</p>
+    </div>
+
+    <!-- Success Message -->
+    @if (success) {
+      <div class="success-message">
+        <i class="bi bi-check-circle"></i>
+        {{ success }}
+      </div>
+    }
+
+    <!-- Error Message -->
+    @if (error) {
+      <div class="error-message">
+        <i class="bi bi-exclamation-triangle"></i>
+        {{ error }}
+      </div>
+    }
+
+    <!-- Add New Holiday Type Form -->
+    <div class="form-section">
+      <h2 class="section-title">
+        <i class="bi bi-plus-circle"></i>
+        Add New Holiday Type
+      </h2>
+
+      <form [formGroup]="holidayTypeForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="holidayName">Holiday Type Name</label>
+            <input 
+              type="text" 
+              id="holidayName" 
+              class="form-input" 
+              formControlName="name"
+              placeholder="e.g., Annual Leave, Sick Leave, Maternity Leave">
+            <div class="error-message" *ngIf="holidayTypeForm.get('name')?.invalid && holidayTypeForm.get('name')?.touched">
+              <i class="bi bi-exclamation-triangle"></i>
+              <span *ngIf="holidayTypeForm.get('name')?.errors?.['required']">Holiday type name is required</span>
+              <span *ngIf="holidayTypeForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="maxDays">Maximum Days Per Year</label>
+            <input 
+              type="number" 
+              id="maxDays" 
+              class="form-input" 
+              formControlName="maxDaysPerYear"
+              min="1" 
+              max="365"
+              placeholder="e.g., 21">
+            <div class="error-message" *ngIf="holidayTypeForm.get('maxDaysPerYear')?.invalid && holidayTypeForm.get('maxDaysPerYear')?.touched">
+              <i class="bi bi-exclamation-triangle"></i>
+              <span *ngIf="holidayTypeForm.get('maxDaysPerYear')?.errors?.['required']">Maximum days is required</span>
+              <span *ngIf="holidayTypeForm.get('maxDaysPerYear')?.errors?.['min']">Days must be at least 1</span>
+              <span *ngIf="holidayTypeForm.get('maxDaysPerYear')?.errors?.['max']">Days cannot exceed 365</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="holidayTypeForm.invalid">
+            <i class="bi bi-plus-circle"></i>
+            Add Holiday Type
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">
+            <i class="bi bi-arrow-clockwise"></i>
+            Reset Form
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Existing Holiday Types Table -->
+    <div class="form-section">
+      <h2 class="section-title">
+        <i class="bi bi-calendar-check"></i>
+        Available Holiday Types
+      </h2>
+
+      @if (holidayTypes.length === 0) {
+        <div class="no-data-message">
+          <i class="bi bi-inbox"></i>
+          No holiday types available. Add your first holiday type above.
+        </div>
+      } @else {
+        <div class="table-container">
+          <table class="app-table">
+            <thead>
+              <tr>
+                <th>Holiday Type</th>
+                <th>Maximum Days Per Year</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (type of holidayTypes; track type.id) {
+                <tr>
+                  <td>
+                    <span class="holiday-type-name">{{ type.name }}</span>
+                  </td>
+                  <td>
+                    <span class="days-badge">{{ type.maxDaysPerYear }} days</span>
+                  </td>
+                  <td>
+                    <button 
+                      (click)="deleteHolidayType(type.id!)" 
+                      class="app-table-action-btn delete"
+                      title="Delete holiday type">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+</div> 

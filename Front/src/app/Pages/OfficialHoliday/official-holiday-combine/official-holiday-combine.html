@@ -1,0 +1,150 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="official-holiday-container">
+  <main class="main-content">
+    <header class="header">
+      <div class="breadcrumbs">Home / Official Holidays</div>
+      <h1>Official Holidays Management</h1>
+      <div class="header-actions">
+        <div class="filter-section">
+          <input type="text" placeholder="Search holiday name" [(ngModel)]="searchTerm">
+          <select [(ngModel)]="selectedMonth">
+            <option *ngFor="let month of months" [value]="month.value">{{ month.label }}</option>
+          </select>
+          <button class="filter-btn" (click)="applyFilters()">Apply Filters</button>
+          <button class="clear-btn" (click)="clearFilters()" type="button">Clear Filter</button>
+        </div>
+        <button class="new-holiday-btn" (click)="showAddHolidayForm()">New Holiday</button>
+      </div>
+    </header>
+    
+    <section class="holiday-groups">
+      <div class="group">
+        <div class="group-header" (click)="toggleGroup('All')" [ngClass]="{expanded: isGroupExpanded('All'), collapsed: !isGroupExpanded('All')}">
+          <span class="group-arrow">
+            <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="group-title">All Official Holidays</span>
+        </div>
+        @if (!isNavigatingAway && isGroupExpanded("All")) {
+          <div @expand class="overflow-hidden">
+            <div class="details">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Holiday Name</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (holiday of displayHolidays; track holiday?.holidayId; let i = $index) {
+                    @if (editIndex === i && editedHoliday && editForm) {
+                      <tr [formGroup]="editForm">
+                        <td>
+                          <input class="form-input" formControlName="holidayName" required />
+                          @if (editForm.get('holidayName')?.touched && editForm.get('holidayName')?.invalid) {
+                            <div class="error-message">
+                              Name is required.
+                            </div>
+                          }
+                        </td>
+                        <td>
+                          <input class="form-input" type="date" formControlName="holidayDate" required />
+                          @if (editForm.get('holidayDate')?.touched && editForm.get('holidayDate')?.invalid) {
+                            <div class="error-message">
+                              Date is required.
+                            </div>
+                          }
+                        </td>
+                        <td>
+                          <input class="form-input" formControlName="description" required />
+                          @if (editForm.get('description')?.touched && editForm.get('description')?.invalid) {
+                            <div class="error-message">
+                              Description is required.
+                            </div>
+                          }
+                        </td>
+                        <td>
+                          <button class="app-table-action-btn edit" (click)="saveHoliday(holiday, i)" [disabled]="editForm.invalid" title="Save"><i class="bi bi-save"></i></button>
+                          <button class="app-table-action-btn delete" (click)="cancelEdit()" title="Cancel"><i class="bi bi-x"></i></button>
+                        </td>
+                      </tr>
+                    } @else {
+                      <tr>
+                        <td>{{ holiday?.holidayName }}</td>
+                        <td>{{ holiday?.holidayDate | date:'dd-MM-yyyy' }}</td>
+                        <td>{{ holiday?.description || '-' }}</td>
+                        <td>
+                          <button class="app-table-action-btn edit" (click)="editHoliday(holiday, i)" title="Edit"><i class="bi bi-pencil"></i></button>
+                          <button class="app-table-action-btn delete" (click)="deleteHoliday(holiday.holidayId)" title="Delete"><i class="bi bi-trash"></i></button>
+                        </td>
+                      </tr>
+                    }
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Add Holiday Modal -->
+@if (showAddForm) {
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="card shadow-lg border-0" style="max-width: 500px; width: 100%; border-radius: 1rem;">
+      <div class="card-header bg-primary text-white border-0 rounded-top">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Add New Holiday</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="hideAddHolidayForm()"></button>
+        </div>
+      </div>
+      <div class="card-body p-4">
+        <form [formGroup]="holidayForm" (ngSubmit)="onSubmit()" class="holiday-form">
+          <div class="mb-3">
+            <label for="holidayName" class="form-label fw-semibold">Holiday Name</label>
+            <input id="holidayName" type="text" formControlName="holidayName" class="form-control" placeholder="Enter holiday name">
+            @if (holidayForm.get('holidayName')?.touched && holidayForm.get('holidayName')?.invalid) {
+              <div class="invalid-feedback">
+                Holiday name is required.
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="holidayDate" class="form-label fw-semibold">Holiday Date</label>
+            <input id="holidayDate" type="date" formControlName="holidayDate" class="form-control">
+            @if (holidayForm.get('holidayDate')?.touched && holidayForm.get('holidayDate')?.invalid) {
+              <div class="invalid-feedback">
+                Holiday date is required.
+              </div>
+            }
+          </div>
+          <div class="mb-4">
+            <label for="description" class="form-label fw-semibold">Description</label>
+            <textarea id="description" formControlName="description" class="form-control" placeholder="Enter description"></textarea>
+            @if (holidayForm.get('description')?.touched && holidayForm.get('description')?.invalid) {
+              <div class="invalid-feedback">
+                Holiday description is required.
+              </div>
+            }
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary flex-fill" (click)="hideAddHolidayForm()">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary flex-fill" [disabled]="holidayForm.invalid">
+              Add Holiday
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+} 

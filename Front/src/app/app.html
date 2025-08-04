@@ -1,0 +1,21 @@
+
+@if (authReady && isLoggedIn && !(router.url === '/login')) {
+  <app-sidebar (openUpdateProfile)="openUpdateProfileModal()" (openSystemSettings)="openSystemSettingsModal()"></app-sidebar>
+  <app-chat-bot></app-chat-bot>
+}
+@if (showUpdateProfileModal) {
+  <div class="modal-backdrop-blur" (click)="closeUpdateProfileModal()"></div>
+  <div class="modal-centered">
+    <app-update-profile (close)="closeUpdateProfileModal()"></app-update-profile>
+  </div>
+}
+@if (showSystemSettingsModal) {
+  <div class="modal-backdrop-blur" (click)="closeSystemSettingsModal()"></div>
+  <div class="modal-centered">
+    <app-system-settings (close)="closeSystemSettingsModal()"></app-system-settings>
+  </div>
+}
+<section class="main-content" [class.with-sidebar]="authReady && isLoggedIn && !(router.url === '/login')">
+  <router-outlet></router-outlet>
+</section>
+

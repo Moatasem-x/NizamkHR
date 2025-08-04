@@ -1,0 +1,85 @@
+<nav class="sidebar"
+     [class.expanded]="isExpanded"
+     (mouseenter)="onSidebarEnter()" (mouseleave)="onSidebarLeave()">
+  <ul>
+    <li class="logo-container">
+      <span class="sidebar-label-container"><img src="/logo.png" alt="logo" class="sidebar-logo"></span>
+    </li>
+    @if (role === "Employee") {
+      <li routerLink="/empdash" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-activity"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Dashboard</span>
+      </li>
+      <li routerLink="/mytasks" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-list-task"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">My Tasks</span>
+      </li>
+      <li routerLink="/requestholiday" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-umbrella"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Request Holiday</span>
+      </li>
+      <li (click)="openUpdateProfile.emit()">
+        <span class="sidebar-icon"><i class="bi bi-person-lines-fill"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Update Profile</span>
+      </li>
+    }
+    @else if (role === "HR" || role === "Admin") {
+      <li routerLink="/hrdash" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-activity"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Dashboard</span>
+      </li>
+      <li routerLink="/employees" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-people"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Employees</span>
+      </li>
+      <li routerLink="/addemployee/0" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-person-plus"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Add Employee</span>
+      </li>
+      @if (role === "Admin") {
+        <li routerLink="/addhr" routerLinkActive="active">
+          <span class="sidebar-icon"><i class="bi bi-person-workspace"></i></span>
+          <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Add HR</span>
+        </li>
+      }
+      <li routerLink="/attendance" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-calendar-check"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Attendance</span>
+      </li>
+      <li routerLink="/salaryreports" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-cash-stack"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Salary Report</span>
+      </li>
+      <li routerLink="/holidays" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-calendar-event"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Official Holidays</span>
+      </li>
+      <li routerLink="/holidayrequests" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-calendar-check"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Holiday Requests</span>
+      </li>
+      <li routerLink="/hr-holiday-request" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-calendar-plus"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Holiday Types</span>
+      </li>
+      <li routerLink="/managetasks" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-list-task"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Manage Tasks</span>
+      </li>
+      <li routerLink="/departments" routerLinkActive="active">
+        <span class="sidebar-icon"><i class="bi bi-building"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Departments</span>
+      </li>
+      <li (click)="openSystemSettings.emit()">
+        <span class="sidebar-icon"><i class="bi bi-gear"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">System Settings</span>
+      </li>
+    }
+    @if (isloggedin) {
+      <li (click)="logout()">
+        <span class="sidebar-icon"><i class="bi bi-box-arrow-right"></i></span>
+        <span class="sidebar-label-container" [@labelSlide]="isExpanded ? 'visible' : 'hidden'">Logout</span>
+      </li>
+    }
+  </ul>
+</nav>

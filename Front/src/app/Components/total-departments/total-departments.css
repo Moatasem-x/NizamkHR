@@ -1,0 +1,23 @@
+.dashboard-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 1.5rem;
+  text-align: center;
+  position: relative;
+  min-width: 180px;
+}
+.dashboard-value {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+.dashboard-label {
+  color: #888;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+canvas {
+  max-width: 80px;
+  margin: 0 auto;
+} 

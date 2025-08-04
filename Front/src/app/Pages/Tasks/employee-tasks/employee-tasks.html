@@ -1,0 +1,40 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="tasks-content">
+  <div class="employee-tasks-container">
+    <div class="tasks-header">
+      <h2><i class="bi bi-list-task"></i> My Tasks</h2>
+      <div class="tasks-filter">
+        <button class="btn btn-secondary" [class.active]="statusFilter === 'All'" (click)="setStatusFilter('All')">All</button>
+        <button class="btn btn-secondary" [class.active]="statusFilter === 'Pending'" (click)="setStatusFilter('Pending')">Pending</button>
+        <button class="btn btn-secondary" [class.active]="statusFilter === 'Done'" (click)="setStatusFilter('Done')">Done</button>
+        <button class="btn btn-secondary" [class.active]="statusFilter === 'Late'" (click)="setStatusFilter('Late')">Late</button>
+      </div>
+    </div>
+    <div *ngIf="filteredTasks.length == 0" class="tasks-empty text-center py-5">
+      <i class="bi bi-inbox display-4 d-block mb-3"></i>
+      No tasks found for this filter.
+    </div>
+    <div class="row g-4 mt-2 justify-content-center">
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let task of filteredTasks">
+        <div class="task-card">
+          <div class="task-card-header d-flex align-items-center justify-content-between">
+            <span class="task-status-badge" [ngClass]="{'pending': task.status === 'Pending', 'done': task.status === 'Done', 'late': task.status === 'Late'}">
+              <i class="bi" [ngClass]="task.status === 'Done' ? 'bi-check-circle-fill' : (task.status === 'Late' ? 'bi-exclamation-triangle-fill' : 'bi-hourglass-split')"></i>
+              {{ task.status }}
+            </span>
+            <span class="task-due-date"><i class="bi bi-calendar-event"></i> {{ task.dueDate | date:'mediumDate' }}</span>
+          </div>
+          <div class="task-card-body">
+            <h5>Task</h5>
+            <div class="task-desc">{{ task.description }}</div>
+          </div>
+          <div class="task-card-footer" *ngIf="task.status === 'Pending'">
+            <button class="btn btn-primary" (click)="markAsDone(task)">
+              <i class="bi bi-check2"></i> Mark as Done
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

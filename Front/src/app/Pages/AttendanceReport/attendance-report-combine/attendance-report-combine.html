@@ -1,0 +1,171 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="attendance-report-container">
+  <main class="main-content">
+    <header class="header">
+      <div class="breadcrumbs">Home / Attendance Report</div>
+      <h1>Attendance Report</h1>
+      <div class="header-actions">
+        <input type="text" placeholder="Search employee name" [(ngModel)]="searchTerm">
+        <input type="date" [(ngModel)]="fromDate" placeholder="From Date">
+        <input type="date" [(ngModel)]="toDate" placeholder="To Date">
+        <button class="filter-btn" (click)="currentPage = 1; applyFilters()">Apply Filters</button>
+        <button class="clear-btn" (click)="currentPage = 1; clearFilters()" type="button">Clear Filter</button>
+      </div>
+    </header>
+    
+    <section class="attendance-groups">
+      <div class="group">
+        <div class="group-header" (click)="toggleGroup('All')" [ngClass]="{expanded: isGroupExpanded('All'), collapsed: !isGroupExpanded('All')}">
+          <span class="group-arrow">
+            <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="group-title">All Attendance Records</span>
+          <button (click)="exportArrayToExcel(allRecords, 'AttendanceReport'); $event.stopPropagation()" class="export-btn">
+            <i class="bi bi-file-earmark-excel"></i>
+            Export to Excel
+          </button>
+        </div>
+        @if (!isNavigatingAway && isGroupExpanded("All")) {
+          <div @expand class="overflow-hidden">
+            <div class="details">
+              <table class="app-table" id="excel-content">
+                <thead>
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Department</th>
+                    <th>Check In Time</th>
+                    <th>Check Out Time</th>
+                    <th>Over Time</th>
+                    <th>Delay Time</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (record of paginatedDisplayRecords; track record.attendanceId; let i = $index) {
+                    <tr>
+                      <td>{{ record.employeeName }}</td>
+                      <td><span class="app-table-badge">{{ record.departmentName }}</span></td>
+
+                      @if (editAttendanceId !== record.attendanceId) {
+                        <td>{{ record.checkInTime }}</td>
+                      }
+                      @if (editAttendanceId === record.attendanceId && editedRecord) {
+                        <td><input [(ngModel)]="editedRecord.checkInTime" type="time" /></td>
+                      }
+
+                      @if (editAttendanceId !== record.attendanceId) {
+                        <td>{{ record.checkOutTime }}</td>
+                      }
+                      @if (editAttendanceId === record.attendanceId && editedRecord) {
+                        <td><input [(ngModel)]="editedRecord.checkOutTime" type="time" /></td>
+                      }
+
+                      <td>{{ record.overtimeHours?.toFixed(2)  }}</td>
+                      
+                      <td>{{ record.delayHours?.toFixed(2) }}</td>
+
+                      @if (editAttendanceId !== record.attendanceId) {
+                        <td>{{ record.attendanceDate| date:'dd-MM-yyyy' }}</td>
+                      }
+                      @if (editAttendanceId === record.attendanceId && editedRecord) {
+                        <td><input [(ngModel)]="editedRecord.attendanceDate" type="date" /></td>
+                      }
+
+                      <td>
+                        @if (editAttendanceId !== record.attendanceId) {
+                          <button class="app-table-action-btn edit" (click)="editRecord(record.attendanceId!)" title="Edit"><i class="bi bi-pencil"></i></button>
+                          <button class="app-table-action-btn delete" (click)="deleteRecord(record.attendanceId!)" title="Delete"><i class="bi bi-trash"></i></button>
+                        }
+                        @if (editAttendanceId === record.attendanceId && editedRecord) {
+                          <button class="app-table-action-btn edit" (click)="saveRecord(record.attendanceId!)" title="Save"><i class="bi bi-save"></i></button>
+                          <button class="app-table-action-btn delete" (click)="cancelEdit()" title="Cancel"><i class="bi bi-x"></i></button>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+              <div class="pagination-controls">
+                <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">Previous</button>
+                <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">Next</button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <!-- Grouped Collapses by Date -->
+      @for (group of dateGroups.slice(1); track group) {
+        <div class="group">
+          <div class="group-header" (click)="toggleGroup(group)" [ngClass]="{expanded: isGroupExpanded(group), collapsed: !isGroupExpanded(group)}">
+            <span class="group-arrow">
+              <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="group-title">{{ group | date:'dd-MM-yyyy' }}</span>
+          </div>
+          @if (!isNavigatingAway && isGroupExpanded(group)) {
+            <div @expand class="overflow-hidden">
+              <div class="details">
+                <table class="app-table">
+                  <thead>
+                    <tr>
+                      <th>Employee Name</th>
+                      <th>Department</th>
+                      <th>Check In Time</th>
+                      <th>Check Out Time</th>
+                      <th>Over Time</th>
+                      <th>Delay Time</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (record of groupedAttendance[group]; track record.attendanceId; let i = $index) {
+                      <tr>
+                        <td>{{ record.employeeName }}</td>
+                        <td><span class="app-table-badge">{{ record.departmentName }}</span></td>
+
+                        @if (editAttendanceId !== record.attendanceId) {
+                          <td>{{ record.checkInTime }}</td>
+                        }
+                        @if (editAttendanceId === record.attendanceId && editedRecord) {
+                          <td><input [(ngModel)]="editedRecord.checkInTime" type="time" /></td>
+                        }
+
+                        @if (editAttendanceId !== record.attendanceId) {
+                          <td>{{ record.checkOutTime }}</td>
+                        }
+                        @if (editAttendanceId === record.attendanceId && editedRecord) {
+                          <td><input [(ngModel)]="editedRecord.checkOutTime" type="time" /></td>
+                        }
+
+                        <td>{{ record.overtimeHours }}</td>
+                        
+                        <td>{{ record.delayHours }}</td>
+
+                        <td>
+                          @if (editAttendanceId !== record.attendanceId) {
+                            <button class="app-table-action-btn edit" (click)="editRecord(record.attendanceId!)" title="Edit"><i class="bi bi-pencil"></i></button>
+                            <button class="app-table-action-btn delete" (click)="deleteRecord(record.attendanceId!)" title="Delete"><i class="bi bi-trash"></i></button>
+                          }
+                          @if (editAttendanceId === record.attendanceId && editedRecord) {
+                            <button class="app-table-action-btn edit" (click)="saveRecord(record.attendanceId!)" title="Save"><i class="bi bi-save"></i></button>
+                            <button class="app-table-action-btn delete" (click)="cancelEdit()" title="Cancel"><i class="bi bi-x"></i></button>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </main>
+</div> 

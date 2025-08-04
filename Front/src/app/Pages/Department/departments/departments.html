@@ -1,0 +1,239 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="departments-container">
+  <main class="main-content">
+    <header class="header">
+      <div class="breadcrumbs">Home / Departments</div>
+      <h1>Departments</h1>
+      <div class="header-actions">
+        <div class="filter-section">
+          <input type="text" placeholder="Search department name" [(ngModel)]="searchTerm">
+          <button class="filter-btn" (click)="applyFilters()">Apply Filters</button>
+          <button class="clear-btn" (click)="clearFilters()" type="button">Clear Filter</button>
+        </div>
+        <button class="new-department-btn" (click)="showAddDepartmentForm()">New Department</button>
+      </div>
+    </header>
+    
+    <section class="department-groups">
+      <div class="group">
+        <div class="group-header" (click)="toggleGroup('All')" [ngClass]="{expanded: isGroupExpanded('All'), collapsed: !isGroupExpanded('All')}">
+          <span class="group-arrow">
+            <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="group-title">All Departments</span>
+        </div>
+        @if (!isNavigatingAway && isGroupExpanded("All")) {
+          <div @expand class="overflow-hidden">
+            <div class="details">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Department Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (department of displayDepartments; track department.departmentId; let i = $index) {
+                    <tr>
+                      @if (editingDepartmentId === department.departmentId) {
+                        <ng-container [formGroup]="editForm">
+                          <td>
+                            <input type="text" class="form-control" formControlName="departmentName" [class.is-invalid]="nameCtrl?.invalid && (nameCtrl?.touched)">
+                            @if (nameCtrl?.invalid && (nameCtrl?.touched)) {
+                              <div class="invalid-feedback">
+                                @if (nameCtrl?.errors?.['required']) {
+                                  <div>Department name is required.</div>
+                                }
+                                @if (nameCtrl?.errors?.['minlength']) {
+                                  <div>Department name must be at least 2 characters.</div>
+                                }
+                              </div>
+                            }
+                          </td>
+                          <td>
+                            <textarea class="form-control" rows="2" formControlName="description" [class.is-invalid]="descCtrl?.invalid && (descCtrl?.touched)"></textarea>
+                            @if (descCtrl?.invalid && (descCtrl?.touched)) {
+                              <div class="invalid-feedback">
+                                @if (descCtrl?.errors?.['required']) {
+                                  <div>Description is required.</div>
+                                }
+                                @if (descCtrl?.errors?.['minlength']) {
+                                  <div>Description must be at least 10 characters.</div>
+                                }
+                              </div>
+                            }
+                          </td>
+                        </ng-container>
+                      } @else {
+                        <td>{{ department.departmentName }}</td>
+                        <td>{{ department.description }}</td>
+                      }
+                      <td>
+                        @if (editingDepartmentId === department.departmentId) {
+                          <button class="app-table-action-btn edit" (click)="saveEditDepartment(department.departmentId)" title="Save"><i class="bi bi-check"></i></button>
+                          <button class="app-table-action-btn delete" (click)="cancelEditDepartment()" title="Cancel"><i class="bi bi-x"></i></button>
+                        } @else {
+                          <button class="app-table-action-btn edit" (click)="startEditDepartment(department.departmentId)" title="Edit"><i class="bi bi-pencil"></i></button>
+                          <button class="app-table-action-btn delete" (click)="deleteDepartment(department.departmentId)" title="Delete"><i class="bi bi-trash"></i></button>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+      </div>
+      <!-- Grouped Collapses by Alphabet -->
+      @for (group of alphabetGroups.slice(1); track group) {
+        <div class="group">
+          <div class="group-header" (click)="toggleGroup(group)" [ngClass]="{expanded: isGroupExpanded(group), collapsed: !isGroupExpanded(group)}">
+            <span class="group-arrow">
+              <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="group-title">{{ group }}</span>
+          </div>
+          @if (!isNavigatingAway && isGroupExpanded(group)) {
+            <div @expand class="overflow-hidden">
+              <div class="details">
+                <table class="app-table">
+                  <thead>
+                    <tr>
+                      <th>Department Name</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (department of groupedDepartments[group]; track department.departmentId; let i = $index) {
+                      <tr>
+                        @if (editingDepartmentId === department.departmentId) {
+                          <ng-container [formGroup]="editForm">
+                            <td>
+                              <input type="text" class="form-control" formControlName="departmentName" [class.is-invalid]="nameCtrl?.invalid && (nameCtrl?.touched)">
+                              @if (nameCtrl?.invalid && (nameCtrl?.touched)) {
+                                <div class="invalid-feedback">
+                                  @if (nameCtrl?.errors?.['required']) {
+                                    <div>Department name is required.</div>
+                                  }
+                                  @if (nameCtrl?.errors?.['minlength']) {
+                                    <div>Department name must be at least 2 characters.</div>
+                                  }
+                                </div>
+                              }
+                            </td>
+                            <td>
+                              <textarea class="form-control" rows="2" formControlName="description" [class.is-invalid]="descCtrl?.invalid && (descCtrl?.touched)"></textarea>
+                              @if (descCtrl?.invalid && (descCtrl?.touched)) {
+                                <div class="invalid-feedback">
+                                  @if (descCtrl?.errors?.['required']) {
+                                    <div>Description is required.</div>
+                                  }
+                                  @if (descCtrl?.errors?.['minlength']) {
+                                    <div>Description must be at least 10 characters.</div>
+                                  }
+                                </div>
+                              }
+                            </td>
+                          </ng-container>
+                        } @else {
+                          <td>{{ department.departmentName }}</td>
+                          <td>{{ department.description }}</td>
+                        }
+                        <td>
+                          @if (editingDepartmentId === department.departmentId) {
+                            <button class="app-table-action-btn edit" (click)="saveEditDepartment(department.departmentId)" title="Save"><i class="bi bi-check"></i></button>
+                            <button class="app-table-action-btn delete" (click)="cancelEditDepartment()" title="Cancel"><i class="bi bi-x"></i></button>
+                          } @else {
+                            <button class="app-table-action-btn edit" (click)="startEditDepartment(department.departmentId)" title="Edit"><i class="bi bi-pencil"></i></button>
+                            <button class="app-table-action-btn delete" (click)="deleteDepartment(department.departmentId)" title="Delete"><i class="bi bi-trash"></i></button>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </main>
+</div>
+
+<!-- Add Department Modal -->
+@if (showAddForm) {
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="card shadow-lg border-0" style="max-width: 500px; width: 100%; border-radius: 1rem;">
+      <div class="card-header bg-primary text-white border-0 rounded-top">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Add New Department</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="hideAddDepartmentForm()"></button>
+        </div>
+      </div>
+      <div class="card-body p-4">
+        <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="departmentName" class="form-label fw-semibold">Department Name</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="departmentName" 
+              formControlName="departmentName"
+              [class.is-invalid]="departmentName?.invalid && (departmentName?.touched || departmentName?.dirty)"
+              placeholder="Enter department name">
+            @if (departmentName?.invalid && (departmentName?.touched || departmentName?.dirty)) {
+            <div class="invalid-feedback">
+              @if (departmentName?.errors?.['required']) {
+                <div>Department name is required.</div>
+              }
+              @if (departmentName?.errors?.['minlength']) {
+                <div>Department name must be at least 2 characters.</div>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label for="description" class="form-label fw-semibold">Description</label>
+            <textarea 
+              class="form-control" 
+              id="description" 
+              rows="4"
+              formControlName="description"
+              [class.is-invalid]="description?.invalid && (description?.touched || description?.dirty)"
+              placeholder="Enter department description"></textarea>
+            @if (description?.invalid && (description?.touched || description?.dirty)) {
+            <div class="invalid-feedback">
+              @if (description?.errors?.['required']) {
+                <div>Description is required.</div>
+              }
+              @if (description?.errors?.['minlength']) {
+                <div>Description must be at least 10 characters.</div>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary flex-fill" (click)="hideAddDepartmentForm()">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary flex-fill" [disabled]="departmentForm.invalid">
+              Add Department
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+} 

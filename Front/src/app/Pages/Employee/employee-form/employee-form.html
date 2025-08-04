@@ -1,0 +1,302 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="add-employee-container">
+    <div class="form-card">
+      <div class="form-header">
+        <h1 class="form-title">
+          <i class="bi bi-person-plus"></i>
+          @if(!editMode)
+           {Add New Employee}
+           @else{
+            Edit Employee
+           }
+        </h1>
+        <p class="form-subtitle">Fill in the employee information below</p>
+      </div>
+  
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="employee-form">
+        <!-- Personal Information Section -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-person"></i>
+            Personal Information
+          </h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName" class="form-label">Employee Name</label>
+              <input
+                type="text"
+                id="fullName"
+                formControlName="fullName"
+                class="form-input"
+                [class.invalid]="isFieldInvalid('fullName')"
+                placeholder="Enter employee full name">
+              @if (getFieldError('fullName')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('fullName') }}
+              </div>
+              }
+            </div>
+            <div class="form-group">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input
+                type="tel"
+                id="phoneNumber"
+                formControlName="phoneNumber"
+                class="form-input"
+                [class.invalid]="isFieldInvalid('phoneNumber')"
+                placeholder="+201xxxxxxxxx"
+                maxlength="13">
+              @if (getFieldError('phoneNumber')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('phoneNumber') }}
+              </div>
+              }
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-input"
+                [class.invalid]="isFieldInvalid('email')"
+                placeholder="Enter email address">
+              @if (getFieldError('email')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('email') }}
+              </div>
+              }
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password" class="form-label">{{ editMode ? 'New Password' : 'Password' }}</label>
+              <div class="position-relative">
+                <input
+                [type]="textType ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                class="form-input password-input"
+                [class.invalid]="isFieldInvalid('password')"
+                placeholder="Enter password">                  
+                <button class="password-toggle">
+                  <i
+                  [ngClass]="{
+                    'bi bi-eye-slash': !textType,
+                    'bi bi-eye': textType
+                  }"
+                  tabindex="-1"
+                  (click)="toggleTextType(); $event.preventDefault(); $event.stopPropagation();">
+                  </i>
+                </button>
+              </div>
+              @if (getFieldError('password')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('password') }}
+              </div>
+              }
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="address" class="form-label">Address</label>
+              <input
+                type="text"
+                id="address"
+                formControlName="address"
+                class="form-input"
+                [class.invalid]="isFieldInvalid('address')"
+                placeholder="Enter complete address">
+              @if (getFieldError('address')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('address') }}
+              </div>
+              }
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="gender" class="form-label">Gender</label>
+              <select
+                id="gender"
+                formControlName="gender"
+                class="form-select"
+                [class.invalid]="isFieldInvalid('gender')">
+                <option value="">Select Gender</option>
+                @for (option of genderOptions; track option) {
+                  <option [value]="option.value">{{ option.label }}</option>
+                }
+              </select>
+              @if (getFieldError('gender')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('gender') }}
+              </div>
+              }
+            </div>
+            <div class="form-group">
+              <label for="departmentId" class="form-label">Department</label>
+              <select
+                id="departmentId"
+                formControlName="departmentId"
+                class="form-select"
+                [class.invalid]="isFieldInvalid('departmentId')"
+                [disabled]="editMode && isHRDepartment">
+                <option value="">Select Department</option>
+                @for (dept of departmentOptions; track dept.departmentId) {
+                  <option [value]="dept.departmentId">{{ dept.departmentName }}</option>
+                }
+              </select>
+              @if (getFieldError('departmentId')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('departmentId') }}
+              </div>
+              }
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nationalId" class="form-label">ID Number</label>
+              <input
+                type="text"
+                id="nationalId"
+                formControlName="nationalId"
+                class="form-input"
+                [class.invalid]="isFieldInvalid('nationalId')"
+                placeholder="14-digit ID number"
+                maxlength="14">
+              @if (getFieldError('nationalId')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('nationalId') }}
+              </div>
+              }
+            </div>
+          </div>
+          @if (!editMode) {
+            <div class="form-group full-width">
+              <label for="image" class="form-label">Employee Image</label>
+              <div class="custom-file-input-wrapper input-with-image-preview">
+                <input id="image" type="file" class="form-input custom-file-input" #imageInput (change)="onImageChange($event)" />
+                <label for="image" class="custom-file-label">Browse</label>
+                <span class="selected-file-name">{{ selectedImageName }}</span>
+                @if (imagePreviewUrl) {
+                  <img [src]="imagePreviewUrl" alt="Preview" class="image-preview-icon input-suffix-image" />
+                }
+              </div>
+            </div>
+          }
+        </div>
+        <!-- Employment Information Section -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-briefcase"></i>
+            Employment Information
+          </h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="hireDate" class="form-label">Hire Date</label>
+              <input
+                type="date"
+                id="hireDate"
+                formControlName="hireDate"
+                class="form-input"
+                [class.invalid]="isFieldInvalid('hireDate')"
+                [readonly]="editMode"
+              >
+              @if (getFieldError('hireDate')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('hireDate') }}
+              </div>
+              }
+            </div>
+            <div class="form-group">
+              <label for="salary" class="form-label">Salary</label>
+              <div class="salary-input-group">
+                <span class="currency-symbol">LE</span>
+                <input
+                  type="number"
+                  id="salary"
+                  formControlName="salary"
+                  class="form-input salary-input"
+                  [class.invalid]="isFieldInvalid('salary')"
+                  placeholder="0.00"
+                  min="0"
+                  step="0.01">
+              </div>
+              @if (getFieldError('salary')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('salary') }}
+              </div>
+              }
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="workStartTime" class="form-label">Work Start Time</label>
+              <input
+                type="time"
+                id="workStartTime"
+                formControlName="workStartTime"
+                class="form-input"
+                [class.invalid]="isFieldInvalid('workStartTime')">
+              @if (getFieldError('workStartTime')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('workStartTime') }}
+              </div>
+              }
+            </div>
+            <div class="form-group">
+              <label for="workEndTime" class="form-label">Work End Time</label>
+              <input
+                type="time"
+                id="workEndTime"
+                formControlName="workEndTime"
+                class="form-input"
+                [class.invalid]="isFieldInvalid('workEndTime')">
+              @if (getFieldError('workEndTime')) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ getFieldError('workEndTime') }}
+              </div>
+              }
+            </div>
+          </div>
+          @if (employeeForm.errors?.['invalidTimeRange']) {
+          <div class="error-message">
+            <i class="bi bi-exclamation-circle"></i>
+            End time must be after start time
+          </div>
+          }
+        </div>
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="resetForm()">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset Form
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="employeeForm.invalid">
+            <i class="bi bi-person-check"></i>
+            {{ editMode ? 'Save' : 'Add Employee' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

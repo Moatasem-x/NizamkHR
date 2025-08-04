@@ -1,0 +1,184 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="tasks-container">
+  <main class="main-content">
+    <header class="header">
+      <div class="breadcrumbs">Home / Tasks</div>
+      <h1>Tasks</h1>
+      <div class="header-actions">
+        <div class="filter-section">
+          <input type="text" placeholder="Search for employee" [(ngModel)]="searchTerm">
+          <select [(ngModel)]="selectedGroup">
+            @for (group of departmentsForGrouping; track group) {
+              <option [value]="group">{{ group }}</option>
+            }
+          </select>
+          <button class="filter-btn" (click)="currentPage = 1; applyFilters()">Apply Filters</button>
+          <button class="clear-btn" (click)="currentPage = 1; clearFilters()" type="button">Clear Filter</button>
+        </div>
+        <button class="new-task-btn" (click)="showAddTaskForm()">New Task</button>
+      </div>
+    </header>
+    
+    <section class="task-groups">
+      <div class="group">
+        <div class="group-header" (click)="toggleGroup('All')" [ngClass]="{expanded: isGroupExpanded('All'), collapsed: !isGroupExpanded('All')}">
+          <span class="group-arrow">
+            <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="group-title">All Tasks</span>
+        </div>
+        @if (!isNavigatingAway && isGroupExpanded("All")) {
+          <div @expand class="overflow-hidden">
+            <div class="details">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Department</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (task of paginatedTasks; track task.taskId) {
+                    <tr>
+                      <td>{{ task.employeeName }}</td>
+                      <td><span class="app-table-badge">{{ task.departmentName }}</span></td>
+                      <td>{{ task.description }}</td>
+                      <td>{{ task.dueDate | date:'dd-MM-yyyy' }}</td>
+                      <td>
+                        <span class="status-badge" [ngClass]="{
+                          'pending': task.status === 'Pending',
+                          'done': task.status === 'Done',
+                          'late': task.status === 'Late'
+                        }">{{ task.status }}</span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+              <div class="pagination-controls">
+                <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">Previous</button>
+                <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">Next</button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <!-- Grouped Collapses -->
+      @for (group of departmentsForGrouping.slice(1); track group) {
+        <div class="group">
+          <div class="group-header" (click)="toggleGroup(group)" [ngClass]="{expanded: isGroupExpanded(group), collapsed: !isGroupExpanded(group)}">
+            <span class="group-arrow">
+              <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="group-title">{{ group }}</span>
+          </div>
+          @if (!isNavigatingAway && isGroupExpanded(group)) {
+            <div @expand class="overflow-hidden">
+              <div class="details">
+                <table class="app-table">
+                  <thead>
+                    <tr>
+                      <th>Employee</th>
+                      <th>Description</th>
+                      <th>Due Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (task of groupedTasks[group]; track task.taskId) {
+                      <tr>
+                        <td>{{ task.employeeName }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.dueDate | date:'dd-MM-yyyy' }}</td>
+                        <td>
+                          <span class="status-badge" [ngClass]="{
+                            'pending': task.status === 'Pending',
+                            'done': task.status === 'Done',
+                            'late': task.status === 'Late'
+                          }">{{ task.status }}</span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </main>
+</div>
+
+<!-- Add Task Modal -->
+<div *ngIf="showAddForm" class="modal-overlay">
+  <div class="modal-content">
+    <div class="card shadow-lg border-0" style="max-width: 500px; width: 100%; border-radius: 1rem;">
+      <div class="card-header bg-primary text-white border-0 rounded-top">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Add New Task</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="hideAddTaskForm()"></button>
+        </div>
+      </div>
+      <div class="card-body p-4">
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="departmentId" class="form-label fw-semibold">Department</label>
+            <select id="departmentId" class="form-select" formControlName="departmentId" (change)="onDepartmentChange($event)" [class.is-invalid]="departmentId?.invalid && (departmentId?.touched || departmentId?.dirty)">
+              <option value="" disabled>Select department</option>
+              <option *ngFor="let dept of departments" [value]="dept.departmentId">{{ dept.departmentName }}</option>
+            </select>
+            <div *ngIf="departmentId?.invalid && (departmentId?.touched || departmentId?.dirty)" class="invalid-feedback">
+              Department is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="employeeId" class="form-label fw-semibold">Employee</label>
+            <select id="employeeId" class="form-select" formControlName="employeeId" [class.is-invalid]="employeeId?.invalid && (employeeId?.touched || employeeId?.dirty)">
+              <option value="" disabled selected>Select employee</option>
+              <option *ngFor="let emp of filteredEmployees" [value]="emp.employeeId">{{ emp.fullName }}</option>
+            </select>
+            <div *ngIf="employeeId?.invalid && (employeeId?.touched || employeeId?.dirty)" class="invalid-feedback">
+              Employee is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label fw-semibold">Description</label>
+            <textarea class="form-control" id="description" rows="3" formControlName="description" [class.is-invalid]="description?.invalid && (description?.touched)" placeholder="Enter task description"></textarea>
+            <div *ngIf="description?.invalid && (description?.touched)" class="invalid-feedback">
+              <div *ngIf="description?.errors?.['required']">Description is required.</div>
+              <div *ngIf="description?.errors?.['minlength']">Description must be at least 5 characters.</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="dueDate" class="form-label fw-semibold">Due Date</label>
+            <input type="date" class="form-control" id="dueDate" formControlName="dueDate" [class.is-invalid]="dueDate?.invalid && (dueDate?.touched || dueDate?.dirty)">
+            <div *ngIf="dueDate?.invalid && (dueDate?.touched)" class="invalid-feedback">
+              Due date is required.
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary flex-fill" (click)="hideAddTaskForm()" >
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary flex-fill" [disabled]="taskForm.invalid">
+              Add Task
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 

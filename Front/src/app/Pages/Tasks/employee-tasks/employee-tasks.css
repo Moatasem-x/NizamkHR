@@ -1,0 +1,143 @@
+tasks-content {
+  background: #f5f6fa;
+  min-height: 100vh;
+}
+.employee-tasks-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem 1rem;
+}
+.tasks-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.tasks-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tasks-filter {
+  display: flex;
+  gap: 0.5rem;
+}
+.tasks-filter .btn {
+  min-width: 90px;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  background: #f8f9fa;
+  border: 1.5px solid #e9ecef;
+  color: #667eea;
+  transition: background 0.2s, color 0.2s;
+}
+.tasks-filter .btn.active,
+.tasks-filter .btn:hover {
+  background: #667eea;
+  color: #fff;
+}
+.tasks-loading .spin {
+  animation: spin 1s linear infinite;
+  font-size: 2rem;
+  color: #667eea;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+.tasks-empty {
+  color: #888;
+  font-size: 1.1rem;
+}
+.task-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(102, 126, 234, 0.13), 0 1.5px 6px rgba(44,62,80,0.04);
+  border: 1.5px solid #e3e8f0;
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+  height: 100%;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.task-card:hover {
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.18), 0 2px 8px rgba(44,62,80,0.08);
+  border-color: #b4c5f7;
+}
+.task-card-header {
+  margin-bottom: 0.7rem;
+}
+.task-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 4px 14px;
+  background: #f3f4f6;
+  color: #888;
+}
+.task-status-badge.pending {
+  background: #fffbe6;
+  color: #eab308;
+}
+.task-status-badge.done {
+  background: #d1fae5;
+  color: #059669;
+}
+.task-status-badge.late {
+  background: #fee2e2;
+  color: #ef4444;
+}
+.task-due-date {
+  font-size: 0.98rem;
+  color: #667eea;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.task-card-body {
+  flex: 1;
+  margin-bottom: 0.7rem;
+}
+.task-card-body h5 {
+  color: #667eea;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+.task-desc {
+  font-size: 1.08rem;
+  color: #222;
+  word-break: break-word;
+}
+.task-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+.task-card-footer .btn {
+  min-width: 120px;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 0.4rem;
+}
+@media (max-width: 900px) {
+  .employee-tasks-container {
+    padding: 1rem 0.2rem 2rem 0.2rem;
+  }
+  .tasks-header h2 {
+    font-size: 1.3rem;
+  }
+  .task-card {
+    padding: 1rem 0.7rem 0.7rem 0.7rem;
+  }
+}

@@ -1,0 +1,107 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="payslip-container-wrapper">
+  <div class="payslip-container">
+    <!-- Page Header -->
+    <div id="section-to-export">
+      <div class="payslip-header">
+        <h1 class="payslip-title">{{ employee?.fullName }} Payslip</h1>
+        <p class="payslip-subtitle">View and print the payslip for {{ employee?.fullName }}.</p>
+      </div>
+    
+      <!-- New Two-Column Layout -->
+      <div class="content-grid">
+        <!-- Left Column -->
+        <div class="left-column">
+          <!-- Employee Information Section -->
+          <div class="info-card">
+            <h2 class="card-title">Employee Information</h2>
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-icon employee-icon"></div>
+                <div class="info-content">
+                  <label>Employee Name</label>
+                  <span class="info-value">{{ employee?.fullName }}</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon department-icon"></div>
+                <div class="info-content">
+                  <label>Department</label>
+                  <span class="info-value">{{ employee?.departmentName }}</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon calendar-icon"></div>
+                <div class="info-content">
+                  <label>Period</label>
+                  <span class="info-value">{{ getMonthName(selectedMonth) }} {{ selectedYear }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-column">
+          <!-- Salary Breakdown Section -->
+          <div class="info-card">
+            <h2 class="card-title">Salary Breakdown</h2>
+            <div class="salary-table">
+              <div class="table-row header">
+                <div class="table-cell">Item</div>
+                <div class="table-cell">Amount</div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">Basic Salary</div>
+                <div class="table-cell amount">{{ salaryReport?.basicSalary | currency:'EGP':'symbol':'1.2-2' }}</div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">Overtime Amount</div>
+                <div class="table-cell">{{ salaryReport?.overtimeAmount | currency:'EGP':'symbol':'1.2-2' }}</div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">Deduction Amount</div>
+                <div class="table-cell">{{ salaryReport?.deductionAmount | currency:'EGP':'symbol':'1.2-2' }}</div>
+              </div>
+            </div>
+            <div class="detailed-report-btn-container">
+              <button class="btn btn-detailed-report" (click)="goToDetailedReport()">
+                <i class="bi bi-list-ul"></i>
+                View Detailed Report
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Net Salary Section - Full Width -->
+      <div class="info-card">
+        <h2 class="card-title">Net Salary</h2>
+        <div class="net-salary">
+          <div class="net-salary-item">
+            <label>Net Salary</label>
+            <span class="net-salary-amount">{{ salaryReport?.netSalary | currency:'EGP':'symbol':'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-secondary" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i>
+        Back to Salary Reports
+      </button>
+      <button class="btn btn-export-pdf" (click)="exportPDF()">
+        <i class="bi bi-file-earmark-pdf"></i>
+        Export PDF
+      </button>
+    </div>
+  </div>
+</div>
+
+
+  

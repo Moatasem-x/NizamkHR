@@ -1,0 +1,86 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="login-container">
+<div class="hex-bg"></div>
+<div class="login-card-container">
+  <div class="login-card">
+    <div class="login-left-panel">
+      <div class="login-brand"><img src="logo.png" alt="logo"></div>
+      <p>HR Management System</p>
+      <h1>Welcome Back</h1>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-envelope"></i></span>
+          <input id="email" type="email" formControlName="email" [class.invalid]="email?.invalid && (email?.touched)" placeholder="Email" />
+        </div>
+        @if (email?.invalid && (email?.touched)) {
+          <div class="error-message">
+            @if (email?.errors?.['required']) {
+              <span>Email is required.</span>
+            }
+            @if (email?.errors?.['email']) {
+              <span>Enter a valid email.</span>
+            }
+          </div>
+        }
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-lock"></i></span>
+          <input id="password" type="password" formControlName="password" [class.invalid]="password?.invalid && (password?.touched )" placeholder="Password" />
+        </div>
+        @if (password?.invalid && (password?.touched)) {
+          <div class="error-message">
+            @if (password?.errors?.['required']) {
+              <span>Password is required.</span>
+            }
+            @if (password?.errors?.['minlength']) {
+              <span>Password must be at least 6 characters.</span>
+            }
+          </div>
+        }
+        <button type="submit" [disabled]="loginForm.invalid" class="login-btn">Sign In</button>
+        @if (error) {
+          <div class="error-message">{{ error }}</div>
+        }
+      </form>
+      
+    </div>
+    <!-- <div class="login-right-panel">
+       <div class="login-bg-image">
+       <img class="w-100" src="/login-image.jpg" alt="Background Image" />
+    </div>
+    </div> -->
+  </div>
+</div>
+<div *ngIf="showWebcam" class="webcam-modal-overlay">
+  <div class="card webcam-modal shadow-lg p-4" style="max-width: 400px; width: 100%; border-radius: 1.5rem;">
+    <div class="text-center mb-3">
+      <h4 class="fw-bold mb-1">Webcam Verification</h4>
+      <p class="text-muted mb-0">Please capture your photo to continue</p>
+    </div>
+    <div class="d-flex flex-column align-items-center mb-3">
+      <div class="webcam-frame mb-2" *ngIf="!capturedImage">
+        <webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)" [imageQuality]="0.92" [videoOptions]="{facingMode: 'user'}" [width]="400" [height]="300"></webcam>
+      </div>
+      <button class="btn btn-take-image w-100 mb-2" type="button" (click)="triggerSnapshot()" [disabled]="!!capturedImage" *ngIf="!capturedImage">
+        <i class="bi bi-camera"></i> Take Image
+      </button>
+    </div>
+    <div *ngIf="capturedImage" class="text-center">
+      <div class="preview-frame mx-auto mb-2" style="width: 260px; height: 260px;">
+        <img [src]="capturedImage.imageAsDataUrl" class="img-fluid rounded-circle border border-3 border-primary" style="width: 260px; height: 260px; object-fit: cover;" alt="Captured Image" />
+      </div>
+      <div class="d-flex justify-content-center gap-3 mb-2">
+        <button class="btn btn-outline-warning flex-fill" type="button" (click)="capturedImage = null;" >
+          <i class="bi bi-arrow-repeat"></i> Try Again
+        </button>
+        <button class="btn btn-primary flex-fill" type="button" (click)="submitWithImage()" [disabled]="!capturedImage">
+          <i class="bi bi-arrow-right-circle"></i> Submit
+        </button>
+      </div>
+    </div>
+    <button class="btn btn-outline-secondary w-100 mt-1" type="button" (click)="showWebcam = false; capturedImage = null;" >
+      <i class="bi bi-x-circle"></i> Cancel
+    </button>
+  </div>
+</div>
+</div>
+

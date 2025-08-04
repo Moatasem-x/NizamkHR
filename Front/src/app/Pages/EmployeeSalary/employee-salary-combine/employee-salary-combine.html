@@ -1,0 +1,142 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="employee-salary-container">
+  <main class="main-content">
+    <header class="header">
+      <div class="breadcrumbs">Home / Employee Salary</div>
+      <h1>Salary Reports</h1>
+      <div class="header-actions">
+        <input type="text" placeholder="Search employee name" [(ngModel)]="searchTerm">
+        <select [(ngModel)]="selectedMonth">
+          <option value="">All Months</option>
+          @for (month of months; track month.value) {
+            <option [value]="month.value">{{ month.label }}</option>
+          }
+        </select>
+        <select [(ngModel)]="selectedYear">
+          <option value="">All Years</option>
+          @for (year of years; track year) {
+            <option [value]="year">{{ year }}</option>
+          }
+        </select>
+        <button class="filter-btn" (click)="applyFilters()">Apply Filters</button>
+        <button class="clear-btn" (click)="clearFilters()" type="button">Clear Filter</button>
+      </div>
+    </header>
+    
+    <section class="salary-groups">
+      <div class="group">
+        <div class="group-header" (click)="toggleGroup('All')" [ngClass]="{expanded: isGroupExpanded('All'), collapsed: !isGroupExpanded('All')}">
+          <span class="group-arrow">
+            <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="group-title">All Salary Reports</span>
+          <button (click)="exportArrayToExcel(salaryReports, 'AttendanceReport'); $event.stopPropagation()" class="export-btn">
+            <i class="bi bi-file-earmark-excel"></i>
+            Export to Excel
+          </button>
+
+        </div>
+        @if (!isNavigatingAway && isGroupExpanded("All")) {
+          <div @expand class="overflow-hidden">
+            <div class="details">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Department</th>
+                    <th>Overtime Amount</th>
+                    <th>Deduction Amount</th>
+                    <th>Basic Salary</th>
+                    <th>Net Salary</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (report of paginatedSalaryReports; track report.employeeId) {
+                    <tr>
+                      <td>{{ report.employeeName }}</td>
+                      <td><span class="app-table-badge">{{ report.departmentName }}</span></td>
+                      <td>{{ report.overtimeAmount | currency:'EGP':'symbol':'1.2-2' }}</td>
+                      <td>{{ report.deductionAmount | currency:'EGP':'symbol':'1.2-2' }}</td>
+                      <td>{{ report.basicSalary | currency:'EGP':'symbol':'1.2-2' }}</td>
+                      <td>{{ report.netSalary | currency:'EGP':'symbol':'1.2-2' }}</td>
+                      <td>{{ getMonthName(report.month) }}</td>
+                      <td>{{ report.year }}</td>
+                      <td>
+                        <button class="view-btn" (click)="viewEmployeeInfo(report.employeeId, report.month, report.year)" title="View Employee Info">
+                          <i class="bi bi-eye"></i>
+                          View Info
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+              <div class="pagination-controls">
+                <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">Previous</button>
+                <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">Next</button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <!-- Grouped Collapses by Department -->
+      @for (group of departmentGroups.slice(1); track group) {
+        <div class="group">
+          <div class="group-header" (click)="toggleGroup(group)" [ngClass]="{expanded: isGroupExpanded(group), collapsed: !isGroupExpanded(group)}">
+            <span class="group-arrow">
+              <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 10l4 4 4-4" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="group-title">{{ group }}</span>
+          </div>
+          @if (!isNavigatingAway && isGroupExpanded(group)) {
+            <div @expand class="overflow-hidden">
+              <div class="details">
+                <table class="app-table">
+                  <thead>
+                    <tr>
+                      <th>Employee Name</th>
+                      <th>Overtime Amount</th>
+                      <th>Deduction Amount</th>
+                      <th>Basic Salary</th>
+                      <th>Net Salary</th>
+                      <th>Month</th>
+                      <th>Year</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (report of groupedSalaryReports[group]; track report.employeeId) {
+                      <tr>
+                        <td>{{ report.employeeName }}</td>
+                        <td>{{ report.overtimeAmount | currency:'EGP':'symbol':'1.2-2' }}</td>
+                        <td>{{ report.deductionAmount | currency:'EGP':'symbol':'1.2-2' }}</td>
+                        <td>{{ report.basicSalary | currency:'EGP':'symbol':'1.2-2' }}</td>
+                        <td>{{ report.netSalary | currency:'EGP':'symbol':'1.2-2' }}</td>
+                        <td>{{ getMonthName(report.month) }}</td>
+                        <td>{{ report.year }}</td>
+                        <td>
+                                                  <button class="view-btn" (click)="viewEmployeeInfo(report.employeeId, report.month, report.year)" title="View Employee Info">
+                          <i class="bi bi-eye"></i>
+                          View Info
+                        </button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </main>
+</div> 

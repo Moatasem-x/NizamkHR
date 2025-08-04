@@ -1,0 +1,101 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="detailed-report-container">
+  <div class="report-header">
+    <div class="header-content">
+      <h1 class="report-title">Detailed Salary Report</h1>
+      <p class="report-subtitle">{{ detailedReport?.attendances?.[0]?.employeeName }} - {{ detailedReport?.attendances?.[0]?.departmentName }}</p>
+      <p class="report-period">{{ getMonthName(month) }} {{ year }}</p>
+    </div>
+    <button class="btn btn-back" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i>
+      Back to Reports
+    </button>
+  </div>
+
+  @if (detailedReport) {
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="summary-card overtime">
+        <div class="card-icon">
+          <i class="bi bi-clock"></i>
+        </div>
+        <div class="card-content">
+          <h3>Overtime Summary</h3>
+          <div class="card-values">
+            <div class="value-item">
+              <span class="label">Total Hours:</span>
+              <span class="value">{{ detailedReport.overTimeSummation }} hrs</span>
+            </div>
+            <div class="value-item">
+              <span class="label">Amount:</span>
+              <span class="value">{{ formatCurrency(detailedReport.overtimeAmount) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-card delay">
+        <div class="card-icon">
+          <i class="bi bi-exclamation-triangle"></i>
+        </div>
+        <div class="card-content">
+          <h3>Delay Summary</h3>
+          <div class="card-values">
+            <div class="value-item">
+              <span class="label">Total Hours:</span>
+              <span class="value">{{ detailedReport.delaySummation }} hrs</span>
+            </div>
+            <div class="value-item">
+              <span class="label">Amount:</span>
+              <span class="value">{{ formatCurrency(detailedReport.delayAmount) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attendance Table -->
+    <div class="table-group">
+      <div class="group-header">
+        <span class="group-title">Daily Attendance Details</span>
+      </div>
+      <div class="details">
+        <div class="table-wrapper">
+        <table class="attendance-table">
+          <thead>
+            <tr>
+              <th>Attendance Date</th>
+              <th>Check In Time</th>
+              <th>Check Out Time</th>
+              <th>Overtime Hours</th>
+              <th>Delay Hours</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (attendance of detailedReport.attendances; track attendance.attendanceId) {
+              <tr>
+                <td>{{ formatDate(attendance.attendanceDate!) }}</td>
+                <td>{{ formatTime(attendance.checkInTime!) }}</td>
+                <td>{{ formatTime(attendance.checkOutTime!) }}</td>
+                <td class="overtime-cell">{{ attendance.overtimeHours || 0 }} hrs</td>
+                <td class="delay-cell">{{ attendance.delayHours || 0 }} hrs</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+  } @else {
+    <div class="no-data">
+      <div class="no-data-icon">
+        <i class="bi bi-file-earmark-text"></i>
+      </div>
+      <h3>No Detailed Report Available</h3>
+      <p>No detailed attendance data found for the selected period.</p>
+    </div>
+  }
+</div>

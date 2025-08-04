@@ -1,0 +1,72 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="dashboard-layout">
+  
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="dashboard-header">
+        <div class="welcome">Welcome back, {{myData?.fullName}}</div>
+        @if (userRole == 'HR') {
+          <div class="attendance-action" style="margin: 20px 0; text-align: center;">
+            <button *ngIf="attendanceStatus === 'not_checked_in'" (click)="checkIn()" class="action-btn check-in-btn">
+              <i class="bi bi-clock"></i>
+              <span>Check In</span>
+            </button>
+            <button *ngIf="attendanceStatus === 'checked_in'" (click)="checkOut()" class="action-btn check-out-btn">
+              <i class="bi bi-clock-history"></i>
+              <span>Check Out</span>
+            </button>
+            <div *ngIf="attendanceStatus === 'checked_out'" class="checked-out-message">
+              <i class="bi bi-check-circle"></i>
+              <span>You have checked out for today. Have a great day!</span>
+            </div>
+          </div>
+        }
+      </header>
+
+
+      <!-- Top Cards -->
+      <div class="dashboard-cards">
+        <div class="card">
+          <div class="card-title">Total Employees</div>
+          <div class="card-value">{{totalEmployees}}</div>
+          <div class="card-desc">Fulltime Employee</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Total Departments</div>
+          <div class="card-value">{{totalDepartments}}</div>
+          <div class="card-desc">Departments</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Attendance Today</div>
+          <div class="card-value">
+            <span >{{attendanceToday}}</span>
+          </div>
+          <div class="card-desc">Present</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Absentees Today</div>
+          <div class="card-value">{{absenteesToday}}</div>
+          <div class="card-desc">Absent</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Pending Leave Requests</div>
+          <div class="card-value">5</div>
+          <div class="card-desc">Pending</div>
+        </div>
+      </div>
+  
+      <!-- Middle Row: Real Charts -->
+      <div class="dashboard-row">
+        <div class="chart-card">
+          <div class="chart-title">Attendance Statistics</div>
+          <canvas #attendanceChartCanvas></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Employee Performance Ratings</div>
+          <canvas #performanceChartCanvas></canvas>
+        </div>
+      </div>
+  
+    </main>
+  </div> 

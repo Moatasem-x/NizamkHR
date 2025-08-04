@@ -1,0 +1,308 @@
+/* Detailed Salary Report Styles */
+.detailed-report-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.header-content h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.header-content p {
+  margin: 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.report-subtitle {
+  font-size: 1.5rem !important;
+  font-weight: 600;
+}
+
+.report-period {
+  margin: 0.5rem 0 0 0 !important;
+  font-size: 1.2rem !important;
+  opacity: 0.8 !important;
+  font-weight: 500;
+}
+
+.btn-back {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.summary-card.overtime {
+  border-left: 4px solid #10b981;
+}
+
+.summary-card.delay {
+  border-left: 4px solid #ef4444;
+}
+
+.card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.summary-card.overtime .card-icon {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.summary-card.delay .card-icon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.card-content h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.card-values {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.value-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 24px;
+}
+
+.value-item .label {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.value-item .value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: right;
+  min-width: 80px;
+}
+
+/* Table Container */
+.table-container {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 2rem;
+}
+
+.table-title {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Table Group Header - Matching Employee Salary Combine */
+.table-group {
+  margin-bottom: 32px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  background: #fff;
+  overflow: hidden;
+}
+
+.group-header {
+  background: #e0f2fe;
+  padding: 25px 20px;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  color: #0284c7;
+  margin-bottom: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+}
+
+.group-arrow {
+  display: inline-block;
+  font-size: 2.1em;
+  margin-right: 14px;
+  color: #0284c7;
+}
+
+.group-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.details {
+  padding: 20px;
+  background: #fff;
+}
+
+/* Table Styles - Matching Employee Salary Combine */
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.attendance-table th {
+  background: #f8fafc;
+  padding: 12px 16px;
+  text-align: center;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.attendance-table td {
+  text-align: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+.attendance-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.table-badge {
+  background: #e0f2fe;
+  color: #0284c7;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.overtime-cell {
+  color: #059669;
+  font-weight: 600;
+}
+
+.delay-cell {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* No Data State */
+.no-data {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.no-data-icon {
+  font-size: 4rem;
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}
+
+.no-data h3 {
+  margin: 0 0 0.5rem 0;
+  color: #374151;
+  font-size: 1.5rem;
+}
+
+.no-data p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .detailed-report-container {
+    padding: 1rem;
+  }
+  
+  .report-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .attendance-table {
+    font-size: 0.8rem;
+  }
+  
+  .attendance-table th,
+  .attendance-table td {
+    padding: 8px 12px;
+  }
+}

@@ -1,0 +1,351 @@
+
+  .dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f5f6fa;
+    justify-content: center;
+    align-items: center;
+  }
+  .sidebar {
+    width: 250px;
+    background: #00b300;
+    border-right: 1px solid #ececec;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem 1rem 1.5rem;
+    gap: 1rem;
+  }
+  .sidebar-logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .sidebar-nav a {
+    color: #222;
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+  .sidebar-nav a.active, .sidebar-nav a:hover {
+    background: #f0f4ff;
+    color: #3b82f6;
+  }
+  .sidebar-section {
+    margin: 1.2rem 0 0.5rem 0;
+    font-size: 0.95rem;
+    color: #888;
+    font-weight: 500;
+  }
+  .sidebar-upgrade {
+    margin-top: auto;
+    background: #f0f4ff;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  .sidebar-trial {
+    color: #3b82f6;
+    font-weight: bold;
+    margin-top: 0.5rem;
+  }
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem 2rem 2rem;
+  }
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0 0.5rem 0;
+  }
+  .welcome {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .search {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ececec;
+    font-size: 1rem;
+    background: #f9f9fb;
+  }
+
+  /* Action Button Styles */
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 140px;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn i {
+  font-size: 1.1rem;
+}
+
+/* Check In Button */
+.check-in-btn {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+}
+
+.check-in-btn:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+}
+
+/* Check Out Button */
+.check-out-btn {
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+  color: white;
+}
+
+.check-out-btn:hover {
+  background: linear-gradient(135deg, #F57C00, #E65100);
+}
+
+.checked-out-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #E8F5E8, #C8E6C9);
+  color: #2E7D32;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 2px solid #4CAF50;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.checked-out-message i {
+  font-size: 1.1rem;
+  color: #4CAF50;
+}
+  .icon-btn {
+    background: #f0f4ff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .invite-btn {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+  .invite-btn:hover {
+    background: #2563eb;
+  }
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 150px;
+  }
+  .card-title {
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .card-value {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #3b82f6;
+  }
+  .card-desc {
+    color: #888;
+    font-size: 0.9rem;
+  }
+
+  .card-update-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    opacity: 0.8;
+  }
+
+  .card-update-indicator small {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .card-update-indicator small::before {
+    content: "●";
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+  .dashboard-row {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2rem;
+    margin-bottom: 3rem; /* Increased bottom margin for better spacing */
+  }
+  .chart-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 1.5rem;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    margin-bottom: 1.5rem; /* Add margin below each chart card */
+  }
+  .chart-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .chart-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 1.1rem;
+    border: 1px dashed #e0e0e0;
+    border-radius: 8px;
+    background: #fafbfc;
+  }
+  /* Ensure Chart.js canvases do not overflow */
+  .chart-card canvas {
+    height: 420px !important;
+    max-width: 100%;
+  }
+  .dashboard-table {
+    /* Removed table, so hide or remove this style */
+    display: none;
+  }
+  .table-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+  th, td {
+    padding: 0.75rem 0.5rem;
+    text-align: left;
+  }
+  th {
+    color: #888;
+    font-weight: 500;
+    border-bottom: 1px solid #ececec;
+  }
+  td {
+    border-bottom: 1px solid #f3f3f3;
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #fff;
+  }
+  .badge.fulltime {
+    background: #3b82f6;
+  }
+  .badge.freelance {
+    background: #f59e42;
+    color: #fff;
+  }
+  .checked-out-message {
+    font-weight: bold;
+    color: #4caf50;
+    margin-left: 1rem;
+  }
+  
+  @media (max-width: 900px) {
+    .dashboard-row {
+      grid-template-columns: 1fr;
+    }
+    .main-content {
+      padding: 0 0.5rem 2rem 0.5rem;
+    }
+    .sidebar {
+      width: 60px;
+      padding: 1rem 0.2rem 1rem 0.2rem;
+    }
+    .sidebar-logo, .sidebar-user span, .sidebar-section, .sidebar-upgrade, .sidebar-trial {
+      display: none;
+    }
+    .sidebar-nav a {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.2rem;
+    }
+  } 

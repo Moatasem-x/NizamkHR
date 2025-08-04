@@ -1,0 +1,68 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="dashboard-layout">
+  <main class="main-content">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="welcome">Welcome, {{employee?.fullName}}!</div>
+      <div class="attendance-action" style="display: flex; align-items: center; gap: 1rem;">
+        <button *ngIf="attendanceStatus === 'not_checked_in'" (click)="checkIn()" class="action-btn check-in-btn">
+          <i class="bi bi-clock"></i>
+          <span>Check In</span>
+        </button>
+        <button *ngIf="attendanceStatus === 'checked_in'" (click)="checkOut()" class="action-btn check-out-btn">
+          <i class="bi bi-clock-history"></i>
+          <span>Check Out</span>
+        </button>
+        <div *ngIf="attendanceStatus === 'checked_out'" class="checked-out-message">
+          <i class="bi bi-check-circle"></i>
+          <span>You have checked out for today. Have a great day!</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Top Cards -->
+    <div class="dashboard-cards">
+      <div class="card">
+        <div class="card-title">Attendance (This Month)</div>
+        <div class="card-value">{{totalAttendancesThisMonth}}</div>
+        <div class="card-desc">Days Present</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Absences (This Month)</div>
+        <div class="card-value">{{totalAbsencesThisMonth}}</div>
+        <div class="card-desc">Days Absent</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Pending Leaves</div>
+        <div class="card-value">{{pendingLeaves}}</div>
+        <div class="card-desc">Requests</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Pending Tasks</div>
+        <div class="card-value">{{pendingTasks}}</div>
+        <div class="card-desc">Tasks</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Basic Salary</div>
+        <div class="card-value">{{employee?.salary || 0}}</div>
+        <div class="card-desc">This Month</div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="dashboard-row dashboard-row-3">
+      <div class="chart-card">
+        <div class="chart-title">Attendance (This Month)</div>
+        <canvas #attendanceChartCanvas></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Salary Breakdown</div>
+        <canvas #salaryChartCanvas></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Tasks Status</div>
+        <canvas #tasksChartCanvas></canvas>
+      </div>
+    </div>
+  </main>
+</div>

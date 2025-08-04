@@ -1,0 +1,320 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f6fa;
+  justify-content: center;
+  align-items: center;
+}
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem 2rem 2rem;
+}
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0 1.5rem 0;
+}
+.welcome {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Action Buttons Container */
+.action-buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
+  padding: 0 1rem;
+}
+
+.attendance-section,
+.profile-section {
+  display: flex;
+  align-items: center;
+}
+
+/* Action Button Styles */
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 140px;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn i {
+  font-size: 1.1rem;
+}
+
+/* Check In Button */
+.check-in-btn {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+}
+
+.check-in-btn:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+}
+
+/* Check Out Button */
+.check-out-btn {
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+  color: white;
+}
+
+.check-out-btn:hover {
+  background: linear-gradient(135deg, #F57C00, #E65100);
+}
+
+/* Profile Button */
+.profile-btn {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  color: white;
+}
+
+.profile-btn:hover {
+  background: linear-gradient(135deg, #1976D2, #1565C0);
+}
+
+/* Checked Out Message */
+.checked-out-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #E8F5E8, #C8E6C9);
+  color: #2E7D32;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 2px solid #4CAF50;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.checked-out-message i {
+  font-size: 1.1rem;
+  color: #4CAF50;
+}
+
+/* Responsive Design for Action Buttons */
+@media (max-width: 768px) {
+  .action-buttons-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .action-btn {
+    min-width: 200px;
+    padding: 1rem 1.5rem;
+  }
+  
+  .checked-out-message {
+    min-width: 200px;
+    padding: 1rem 1.5rem;
+  }
+}
+.first-card {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  margin-bottom: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1.5rem 1.2rem;
+  min-height: 180px;
+  text-align: left;
+}
+.first-card b {
+  margin-right: 0.5em;
+}
+.first-card > div:not(:first-child) {
+  text-align: left;
+  font-size: 1.08rem;
+  color: #222;
+  margin: 0.5rem 0;
+}
+.first-card > div:first-child {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  color: #3b82f6;
+  justify-content: flex-start;
+}
+.first-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #3b82f6;
+  letter-spacing: 0.01em;
+}
+.first-card-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.first-card-info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.08rem;
+  color: #222;
+  background: #f5f6fa;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  box-shadow: 0 1px 3px rgba(59,130,246,0.04);
+}
+.first-card-info-row i {
+  color: #ffaf1c;
+  font-size: 1.2em;
+  margin-right: 0.2em;
+}
+.info-label {
+  font-weight: 600;
+  color: #555;
+  margin-right: 0.2em;
+}
+.info-value {
+  color: #222;
+  font-weight: 400;
+  word-break: break-all;
+}
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 150px;
+}
+.card-title {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.card-value {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #111;
+}
+.card-desc {
+  color: #111;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+.dashboard-row-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.chart-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1.5rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 320px;
+  margin-bottom: 1.5rem;
+}
+.chart-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #111;
+}
+.chart-card canvas {
+  height: 240px !important;
+  max-width: 100%;
+}
+@media (max-width: 1200px) {
+  .dashboard-row-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 900px) {
+  .dashboard-row, .dashboard-row-3 {
+    grid-template-columns: 1fr;
+  }
+  .main-content {
+    padding: 0 0.5rem 2rem 0.5rem;
+  }
+}
+@media (max-width: 700px) {
+  .first-card {
+    max-width: 100%;
+    padding: 1rem 0.5rem;
+    min-height: 120px;
+  }
+  .first-card > div {
+    font-size: 0.98rem;
+  }
+  .first-card-info-row {
+    font-size: 0.97rem;
+    padding: 0.5rem 0.5rem;
+  }
+  .first-card-title {
+    font-size: 1.05rem;
+  }
+}
+
+.profile-edit-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-edit-form-modal {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2rem 2rem 1.5rem 2rem;
+  max-width: 400px;
+  width: 100%;
+  min-width: 300px;
+  position: relative;
+}

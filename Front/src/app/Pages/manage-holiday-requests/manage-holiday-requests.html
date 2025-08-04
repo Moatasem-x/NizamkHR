@@ -1,0 +1,79 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="manage-holiday-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h1 class="form-title">
+        <i class="bi bi-clipboard-check"></i>
+        Manage Holiday Requests
+      </h1>
+      <p class="form-subtitle">Review, approve, or reject employee holiday requests</p>
+    </div>
+    <div class="filter-row filter-row-extra">
+      <input type="text" class="form-input filter-input" placeholder="Filter by employee name..." (input)="setNameFilter($any($event.target).value)" [value]="filterName" />
+      <input type="date" class="form-input filter-input" (input)="setDateFilter($any($event.target).value)" [value]="filterDate" />
+      <button class="btn btn-secondary btn-clear-filter" type="button" (click)="clearFilters()">
+        <i class="bi bi-x-circle"></i> Clear
+      </button>
+    </div>
+    <div class="filter-row">
+      <div class="btn-group">
+        <button class="btn btn-secondary" [class.active]="filter==='all'" (click)="setFilter('all')">All</button>
+        <button class="btn btn-secondary" [class.active]="filter==='pending'" (click)="setFilter('pending')">Pending</button>
+        <button class="btn btn-secondary" [class.active]="filter==='approved'" (click)="setFilter('approved')">Approved</button>
+        <button class="btn btn-secondary" [class.active]="filter==='rejected'" (click)="setFilter('rejected')">Rejected</button>
+      </div>
+    </div>
+    @if (!error) {
+      @if (filteredRequests.length === 0) {
+        <div class="no-requests-row"><i class="bi bi-inbox"></i> No requests found for this filter.</div>
+      }
+      @for (req of filteredRequests; track req.id) {
+        <div class="custom-request-card">
+          <div class="row align-items-center">
+            <div class="col-md-8 col-12 card-main-info">
+              <div class="card-row">
+                <span class="label"><i class="bi bi-person"></i> Employee:</span>
+                <span class="value">{{ req.employeeName }}</span>
+              </div>
+              <div class="card-row">
+                <span class="label"><i class="bi bi-calendar2-week"></i> Type:</span>
+                <span class="value">{{ req.leaveTypeName }}</span>
+              </div>
+              <div class="card-row">
+                <span class="label"><i class="bi bi-calendar-date"></i> Start:</span>
+                <span class="value">{{ req.startDate | date:'dd-MM-yyyy' }}</span>
+              </div>
+              <div class="card-row">
+                <span class="label ml-3"><i class="bi bi-calendar-date"></i> End:</span>
+                <span class="value">{{ req.endDate | date:'dd-MM-yyyy' }}</span>
+              </div>
+              <div class="card-row">
+                <span class="label"><i class="bi bi-clock-history"></i> Requested:</span>
+                <span class="value">{{ req.requestedAt | date:'dd-MM-yyyy' }}</span>
+              </div>
+              <div class="card-row">
+                <span class="label"><i class="bi bi-chat-left-text"></i> Reason:</span>
+                <span class="value">{{ req.reason }}</span>
+              </div>
+            </div>
+            <div class="col-md-4 col-12 card-status-action">
+              <div class="status-badge-row">
+                <span class="badge" [ngClass]="getBadgeClass(req.status)">{{ req.status }}</span>
+              </div>
+              @if (req.status?.toLowerCase() === 'pending') {
+                <div class="action-row">
+                  <button class="btn btn-primary btn-action" (click)="takeAction(req, 'approved')">
+                    <i class="bi bi-check-circle"></i> Approve
+                  </button>
+                  <button class="btn btn-secondary btn-action" (click)="takeAction(req, 'rejected')">
+                    <i class="bi bi-x-circle"></i> Reject
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

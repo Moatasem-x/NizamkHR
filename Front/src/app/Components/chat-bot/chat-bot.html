@@ -1,0 +1,35 @@
+<div class="chat-bot-container" [@chatWindow]="isOpen ? 'open' : 'minimized'" [ngClass]="{'minimized': !isOpen, 'open': isOpen}">
+  <div class="chat-bot-header" (click)="toggleChat()">
+    <div>
+      <img src="Chatbot.png" alt="Chatbot" class="chatbot-image">
+      @if (isOpen) {
+        <span class="chat-bot-title">Nizamak Bot</span>
+      }
+    </div>
+    @if (isOpen) {
+      <span class="chat-bot-toggle-icon">−</span>
+    }
+  </div>
+  @if (isOpen) {
+    <div class="chat-bot-body">
+      <div class="chat-bot-messages" #messagesContainer>
+        @for (msg of messages; track msg.id) {
+          <div [ngClass]="{'user-msg': msg.sender === 'user', 'bot-msg': msg.sender !== 'user'}">
+            <span class="msg-text">{{ msg.message }}</span>
+          </div>
+        }
+        @if (isTyping) {
+          <div class="bot-msg typing">
+            <span class="msg-text">typing<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>
+          </div>
+        }
+      </div>
+      <div class="chat-bot-input-row">
+        <input autocomplete="off" type="text" [(ngModel)]="userInput" (keydown)="onInputKeydown($event)" placeholder="Type your message..." />
+        <button (click)="sendMessage()" [disabled]="!userInput.trim() || isTyping">
+          <i class="bi bi-send"></i>
+        </button>
+      </div>
+    </div>
+  }
+</div>
